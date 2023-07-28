@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name" translatable="false">Fitness Tracker</string>
+    <string name="label_bmi">BMI</string>
+</resources>
