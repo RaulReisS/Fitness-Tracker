@@ -1,4 +1,29 @@
 <resources>
     <string name="app_name" translatable="false">Fitness Tracker</string>
     <string name="label_bmi">BMI</string>
+    <string name="bmr">BMR</string>
+    <string name="weight">Wight (kg)</string>
+    <string name="height">Height (cm)</string>
+    <string name="imc_desc">BMI is the scronym for Body Mass Index which is used to evaluate the weight of a person based on their height and
+indicate if they have the ideal weight, or if it is above or below that value.\n\nFill in the blanks with a wight and a height to calculate your BMI</string>
+    <string name="calc">Calculate</string>
+    <string name="fields_message">The blanks must be filled with non-zero numbers</string>
+    <string name="imc_severely_low_weight">Severely below ideal</string>
+    <string name="imc_very_low_weight">Very below ideal</string>
+    <string name="imc_low_weight">Below ideal</string>
+    <string name="normal">Ideal</string>
+    <string name="imc_high_weight">Overweight</string>
+    <string name="imc_so_high_weight">Moderately overweight</string>
+    <string name="imc_severely_high_weight">Severely overweight</string>
+    <string name="imc_extreme_weight">Extremely overwight</string>
+    <string name="imc_response">BMI: %1$.2f</string>
+    <string name="save">Save</string>
+    <string name="calc_saved">Record successfully saved</string>
+    <string name="calc_removed">Record deleted successfully</string>
+    <string name="search">Search</string>
+    <string name="bmr_desc">BMR is te number that indicates the amount of calorie that the body needs based on your lifestyle</string>
+    <string name="age">Age</string>
+    <string name="bmr_response">BMR: %1$.2f</string>
+    <string name="delete_message">Are you sure you want to delete the record?</string>
+    <string name="cancel">Cancel</string>
 </resources>
