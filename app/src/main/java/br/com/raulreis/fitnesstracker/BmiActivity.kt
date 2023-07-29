@@ -24,7 +24,15 @@ class BmiActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            val weight = edtWeight.text.toString().toInt()
+            val height = edtHeight.text.toString().toInt()
+            val result = calculateBmi(weight, height)
+
         }
+    }
+
+    private fun calculateBmi(weight: Int, height: Int) : Double {
+        return weight/(height*height/10000.0)
     }
 
     private fun validate() : Boolean {
