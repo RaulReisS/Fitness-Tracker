@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.StringRes
 
 class BmiActivity : AppCompatActivity() {
 
@@ -28,6 +29,23 @@ class BmiActivity : AppCompatActivity() {
             val height = edtHeight.text.toString().toInt()
             val result = calculateBmi(weight, height)
 
+            val bmiResponseId = bmiResponse(result)
+
+            Toast.makeText(this, bmiResponseId, Toast.LENGTH_SHORT).show()
+
+        }
+    }
+    @StringRes
+    private fun bmiResponse(bmi: Double) : Int {
+        return when {
+            bmi < 15.0 -> R.string.bmi_severely_low_weight
+            bmi < 16.0 -> R.string.bmi_very_low_weight
+            bmi < 18.5 -> R.string.bmi_low_weight
+            bmi < 25.0 -> R.string.normal
+            bmi < 30.0 -> R.string.bmi_high_weight
+            bmi < 35.0 -> R.string.bmi_so_high_weight
+            bmi < 40.0 -> return R.string.bmi_severely_high_weight
+            else -> R.string.bmi_extreme_weight
         }
     }
 
