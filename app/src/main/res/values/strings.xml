@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Fitness Tracker</string>
     <string name="label_bmi">BMI</string>
-    <string name="bmr">BMR</string>
+    <string name="label_bmr">BMR</string>
     <string name="weight">Wight (kg)</string>
     <string name="height">Height (cm)</string>
     <string name="bmi_desc">BMI is the scronym for Body Mass Index which is used to evaluate the weight of a person based on their height and

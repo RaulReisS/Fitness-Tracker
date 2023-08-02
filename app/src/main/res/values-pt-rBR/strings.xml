@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="label_bmi">IMC</string>
-    <string name="bmr">TMB</string>
+    <string name="label_bmr">TMB</string>
     <string name="weight">peso (kg)</string>
     <string name="height">altura (cm)</string>
     <string name="bmi_desc">IMC é a sigla para Índice de Massa Corporal que serve para avaliar o peso
