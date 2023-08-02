@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -32,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                 id = 2,
                 drawableID = R.drawable.baseline_balance_24,
                 textStringId = R.string.label_bmr,
-                color = Color.GREEN
+                color = Color.YELLOW
             )
         )
 
@@ -71,8 +74,13 @@ class MainActivity : AppCompatActivity() {
     //Classe da celula em si
     private class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: MainItem) {
-            val buttonTest : Button = itemView.findViewById(R.id.btnItem)
-            buttonTest.setText(item.textStringId)
+            val img: ImageView = itemView.findViewById(R.id.imgItemIcon)
+            val name: TextView = itemView.findViewById(R.id.txtItemName)
+            val container : LinearLayout = itemView as LinearLayout
+
+            img.setImageResource(item.drawableID)
+            name.setText(item.textStringId)
+            container.setBackgroundColor(item.color)
         }
     }
 }
