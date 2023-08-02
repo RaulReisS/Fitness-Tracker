@@ -8,25 +8,29 @@
     android:gravity="center"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:id="@+id/btnMainBMI"
-        android:background="@color/colorLightFray"
-        android:padding="10dp"
-        android:layout_width="wrap_content"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMainButtons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-        <ImageView
-            android:src="@drawable/baseline_balance_24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_bmi" />
+<!--    <LinearLayout-->
+<!--        android:id="@+id/btnMainBMI"-->
+<!--        android:background="@color/colorLightFray"-->
+<!--        android:padding="10dp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_height="wrap_content">-->
 
-    </LinearLayout>
+<!--        <ImageView-->
+<!--            android:src="@drawable/baseline_balance_24"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content" />-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/label_bmi" />-->
+<!--    </LinearLayout>-->
 
 
 

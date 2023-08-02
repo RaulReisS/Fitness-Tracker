@@ -17,7 +17,7 @@
     <string name="bmi_so_high_weight">Moderadamente obeso</string>
     <string name="bmi_severely_high_weight">Severamente obeso</string>
     <string name="bmi_extreme_weight">Extremamente obeso</string>
-    <string name="bmi_response">Imc: %1$.2f</string>
+    <string name="bmi_response">IMC: %1$.2f</string>
     <string name="save">Salvar</string>
     <string name="calc_saved">Registro salvo com sucesso</string>
     <string name="calc_removed">Registro removido com sucesso</string>

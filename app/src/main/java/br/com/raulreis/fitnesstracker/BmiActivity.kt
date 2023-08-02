@@ -1,11 +1,15 @@
 package br.com.raulreis.fitnesstracker
 
+import android.content.Context
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 
 class BmiActivity : AppCompatActivity() {
 
@@ -31,7 +35,18 @@ class BmiActivity : AppCompatActivity() {
 
             val bmiResponseId = bmiResponse(result)
 
-            Toast.makeText(this, bmiResponseId, Toast.LENGTH_SHORT).show()
+            AlertDialog.Builder(this)
+                .setTitle(getString(R.string.bmi_response, result))
+                .setMessage(bmiResponseId)
+                .setPositiveButton(android.R.string.ok) { dialog, wich ->
+
+            }
+                .create()
+                .show()
+
+            // Passamos o nome o serviço e recebemos de volta o gerenciador daquele serviço
+            val service = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            service.hideSoftInputFromWindow(currentFocus?.windowToken,0)
 
         }
     }
