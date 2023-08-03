@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         rvMain = findViewById(R.id.rvMainButtons)
         rvMain.adapter = adapter
 
-        rvMain.layoutManager = LinearLayoutManager(this)
+        rvMain.layoutManager = GridLayoutManager(this, 2)
 
         // Calsse para administrar a recyclerview e suas celulas (e os seus layouts de itens)
         // Adapter ->
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         fun bind(item: MainItem) {
             val img: ImageView = itemView.findViewById(R.id.imgItemIcon)
             val name: TextView = itemView.findViewById(R.id.txtItemName)
-            val container : LinearLayout = itemView as LinearLayout
+            val container : LinearLayout = itemView.findViewById(R.id.containerItemBmi)
 
             img.setImageResource(item.drawableID)
             name.setText(item.textStringId)
