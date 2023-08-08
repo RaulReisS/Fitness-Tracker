@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import br.com.raulreis.fitnesstracker.model.Calc
 
 class BmiActivity : AppCompatActivity() {
 
@@ -38,9 +39,20 @@ class BmiActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setTitle(getString(R.string.bmi_response, result))
                 .setMessage(bmiResponseId)
-                .setPositiveButton(android.R.string.ok) { dialog, wich ->
+                .setPositiveButton(android.R.string.ok) { dialog, which ->
+                    // Não fazer nada nesse botão, apenas fechar o alert dialog
+                }
+                .setNegativeButton(R.string.save) { dialog, which ->
+                    Thread {
+                        val app = application as App
+                        val dao = app.db.calcDao()
+                        dao.insert(Calc(type = "imc", res = result))
 
-            }
+                        runOnUiThread {
+                            Toast.makeText(this@BmiActivity, R.string.calc_saved, Toast.LENGTH_SHORT).show()
+                        }
+                    }.start()
+                }
                 .create()
                 .show()
 
