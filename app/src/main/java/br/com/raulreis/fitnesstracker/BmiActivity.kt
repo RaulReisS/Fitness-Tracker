@@ -1,7 +1,7 @@
 package br.com.raulreis.fitnesstracker
 
 import android.content.Context
-import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
@@ -46,10 +46,12 @@ class BmiActivity : AppCompatActivity() {
                     Thread {
                         val app = application as App
                         val dao = app.db.calcDao()
-                        dao.insert(Calc(type = "imc", res = result))
+                        dao.insert(Calc(type = "bmi", res = result))
 
                         runOnUiThread {
-                            Toast.makeText(this@BmiActivity, R.string.calc_saved, Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this@BmiActivity, ListCalcActivity::class.java)
+                            intent.putExtra("type", "bmi")
+                            startActivity(intent)
                         }
                     }.start()
                 }
