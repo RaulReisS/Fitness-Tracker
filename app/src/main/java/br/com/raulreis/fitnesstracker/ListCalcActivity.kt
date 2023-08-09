@@ -23,7 +23,29 @@ class ListCalcActivity : AppCompatActivity() {
 
         val type = intent?.extras?.getString("type") ?: throw IllegalStateException("type not found")
 
+
+        val result = mutableListOf<Calc>()
+        val adapter = ListCalcAdapter(result) { item ->
+            val description = getString(bmiResponse(item.res)) +
+                    "\n\n${getString(R.string.registred_on)} " +
+                    SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(item.createdDate)
+            val title = when(item.type) {
+                "bmi" -> getString(R.string.bmi_response, item.res)
+                "bmr" -> getString(R.string.bmr_response, item.res)
+                else -> item.res.toString()
+            }
+            AlertDialog.Builder(this@ListCalcActivity)
+                .setTitle(title)
+                .setMessage(description)
+                .setPositiveButton(android.R.string.ok) {_, _ ->
+                    // Fazer nada, apensar fechar
+                }
+                .create()
+                .show()
+        }
         rvListCalc = findViewById(R.id.rvListCalc)
+        rvListCalc.layoutManager = LinearLayoutManager(this@ListCalcActivity)
+        rvListCalc.adapter = adapter
 
 
         Thread {
@@ -32,29 +54,8 @@ class ListCalcActivity : AppCompatActivity() {
             val response = dao.getRegisterByType(type)
 
             runOnUiThread {
-
-                val adapter = ListCalcAdapter(response) { item ->
-                    val description = getString(bmiResponse(item.res)) +
-                            "\n\n${getString(R.string.registred_on)} " +
-                            SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(item.createdDate)
-                    val title = when(item.type) {
-                        "bmi" -> getString(R.string.bmi_response, item.res)
-                        "bmr" -> getString(R.string.bmr_response, item.res)
-                        else -> item.res.toString()
-                    }
-                    AlertDialog.Builder(this@ListCalcActivity)
-                        .setTitle(title)
-                        .setMessage(description)
-                        .setPositiveButton(android.R.string.ok) {_, _ ->
-                            // Fazer nada, apensar fechar
-                        }
-                        .create()
-                        .show()
-                }
-
-                rvListCalc.adapter = adapter
-                rvListCalc.layoutManager = LinearLayoutManager(this@ListCalcActivity)
-
+                result.addAll(response)
+                adapter.notifyDataSetChanged()
             }
         }.start()
 
