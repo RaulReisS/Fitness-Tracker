@@ -26,4 +26,7 @@ indicate if they have the ideal weight, or if it is above or below that value.\n
     <string name="bmr_response">BMR: %1$.2f</string>
     <string name="delete_message">Are you sure you want to delete the record?</string>
     <string name="cancel">Cancel</string>
+    <string name="bmi_label">IMC</string>
+    <string name="bmr_label">TBM</string>
+    <string name="registred_on">Registered on:</string>
 </resources>
