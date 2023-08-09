@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -49,9 +51,7 @@ class BmiActivity : AppCompatActivity() {
                         dao.insert(Calc(type = "bmi", res = result))
 
                         runOnUiThread {
-                            val intent = Intent(this@BmiActivity, ListCalcActivity::class.java)
-                            intent.putExtra("type", "bmi")
-                            startActivity(intent)
+                            openListActivity()
                         }
                     }.start()
                 }
@@ -64,6 +64,25 @@ class BmiActivity : AppCompatActivity() {
 
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menuSearch) {
+            openListActivity()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun openListActivity() {
+        val intent = Intent(this@BmiActivity, ListCalcActivity::class.java)
+        intent.putExtra("type", "bmi")
+        startActivity(intent)
+    }
+
     @StringRes
     private fun bmiResponse(bmi: Double) : Int {
         return when {
