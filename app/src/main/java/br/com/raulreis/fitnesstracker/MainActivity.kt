@@ -47,7 +47,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 2 -> {
-                    // Abrir outra activity
+                    val intent = Intent(this@MainActivity, BmrActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             return MainViewHolder(view)
         }
 
-        // 2 - Informar quantas celular essa listagem terá
+        // 2 - Informar quantas celulas essa listagem terá
         override fun getItemCount(): Int {
             return mainItems.size
         }

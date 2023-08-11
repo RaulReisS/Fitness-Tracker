@@ -7,24 +7,30 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import br.com.raulreis.fitnesstracker.model.Calc
 
-class BmiActivity : AppCompatActivity() {
+class BmrActivity : AppCompatActivity() {
 
+    private lateinit var autoLifestyle: AutoCompleteTextView
     private lateinit var edtWeight: EditText
     private lateinit var edtHeight: EditText
+    private lateinit var edtAge: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bmi)
+        setContentView(R.layout.activity_bmr)
 
-        edtWeight = findViewById(R.id.edtBmiWeight)
-        edtHeight = findViewById(R.id.edtBmiHeight)
-        val btnSend = findViewById<Button>(R.id.btnBmiSend)
+        autoLifestyle = findViewById(R.id.autoLifestyle)
+        edtWeight = findViewById(R.id.edtBmrWeight)
+        edtHeight = findViewById(R.id.edtBmrHeight)
+        edtAge = findViewById(R.id.edtBmrAge)
+        val btnSend = findViewById<Button>(R.id.btnBmrSend)
 
         btnSend.setOnClickListener {
             if(!validate()) {
@@ -34,13 +40,14 @@ class BmiActivity : AppCompatActivity() {
 
             val weight = edtWeight.text.toString().toInt()
             val height = edtHeight.text.toString().toInt()
-            val result = calculateBmi(weight, height)
+            val age = edtAge.text.toString().toInt()
 
-            val bmiResponseId = bmiResponse(result)
+            val result = calculateBmr(weight, height, age)
+
+            val response = bmrRequest(result)
 
             AlertDialog.Builder(this)
-                .setTitle(getString(R.string.bmi_response, result))
-                .setMessage(bmiResponseId)
+                .setMessage(getString(R.string.bmr_response, response))
                 .setPositiveButton(android.R.string.ok) { dialog, which ->
                     // Não fazer nada nesse botão, apenas fechar o alert dialog
                 }
@@ -48,7 +55,7 @@ class BmiActivity : AppCompatActivity() {
                     Thread {
                         val app = application as App
                         val dao = app.db.calcDao()
-                        dao.insert(Calc(type = "bmi", res = result))
+                        dao.insert(Calc(type = "bmr", res = result))
 
                         runOnUiThread {
                             openListActivity()
@@ -61,8 +68,12 @@ class BmiActivity : AppCompatActivity() {
             // Passamos o nome o serviço e recebemos de volta o gerenciador daquele serviço
             val service = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             service.hideSoftInputFromWindow(currentFocus?.windowToken,0)
-
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setAutoOptions()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -77,29 +88,33 @@ class BmiActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
     private fun openListActivity() {
-        val intent = Intent(this@BmiActivity, ListCalcActivity::class.java)
-        intent.putExtra("type", "bmi")
+        val intent = Intent(this@BmrActivity, ListCalcActivity::class.java)
+        intent.putExtra("type", "bmr")
         startActivity(intent)
     }
 
-    @StringRes
-    private fun bmiResponse(bmi: Double) : Int {
-        return when {
-            bmi < 15.0 -> R.string.bmi_severely_low_weight
-            bmi < 16.0 -> R.string.bmi_very_low_weight
-            bmi < 18.5 -> R.string.bmi_low_weight
-            bmi < 25.0 -> R.string.normal
-            bmi < 30.0 -> R.string.bmi_high_weight
-            bmi < 35.0 -> R.string.bmi_so_high_weight
-            bmi < 40.0 -> return R.string.bmi_severely_high_weight
-            else -> R.string.bmi_extreme_weight
-        }
+    private fun setAutoOptions() {
+        val items = resources.getStringArray(R.array.bmr_lifestyle)
+        autoLifestyle.setText(items.first())
+        val adapter = ArrayAdapter(this@BmrActivity, android.R.layout.simple_list_item_1, items)
+        autoLifestyle.setAdapter(adapter)
     }
 
-    private fun calculateBmi(weight: Int, height: Int) : Double {
-        return weight/(height*height/10000.0)
+    private fun calculateBmr(weight: Int, height: Int, age: Int): Double {
+        return 66 + (13.8 * weight) + (5 * height) - (6.8 * age)
+    }
+
+    private fun bmrRequest(bmr: Double): Double {
+        val items = resources.getStringArray(R.array.bmr_lifestyle)
+        return when(autoLifestyle.text.toString()) {
+            items[0] -> bmr * 1.2
+            items[1] -> bmr * 1.375
+            items[2] -> bmr * 1.55
+            items[3] -> bmr * 1.725
+            items[4] -> bmr * 1.9
+            else -> 0.0
+        }
     }
 
     private fun validate() : Boolean {
@@ -107,8 +122,10 @@ class BmiActivity : AppCompatActivity() {
         // Não pode inserir/começar com 0
 
         return edtWeight.text.toString().isNotEmpty()
-            && edtHeight.text.toString().isNotEmpty()
-            && !edtWeight.text.toString().startsWith("0")
-            && !edtHeight.text.toString().startsWith("0")
+                && edtHeight.text.toString().isNotEmpty()
+                && edtAge.text.toString().isNotEmpty()
+                && !edtWeight.text.toString().startsWith("0")
+                && !edtHeight.text.toString().startsWith("0")
+                && !edtAge.text.toString().startsWith("0")
     }
 }

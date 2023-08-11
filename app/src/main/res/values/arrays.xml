@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="bmr_lifestyle">
+        <item>@string/bmr_item_little</item>
+        <item>@string/bmr_item_light</item>
+        <item>@string/bmr_item_moderate</item>
+        <item>@string/bmr_item_heavy</item>
+        <item>@string/bmr_item_heavy_daily</item>
+    </string-array>
+</resources>

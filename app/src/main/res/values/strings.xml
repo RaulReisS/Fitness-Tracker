@@ -29,4 +29,9 @@ indicate if they have the ideal weight, or if it is above or below that value.\n
     <string name="bmi_label">IMC</string>
     <string name="bmr_label">TBM</string>
     <string name="registred_on">Registered on:</string>
+    <string name="bmr_item_little">Little or no exercise</string>
+    <string name="bmr_item_light">Light exercise. 1 to 3 days a week</string>
+    <string name="bmr_item_moderate">Moderate exercise. 3 to 5 days a week</string>
+    <string name="bmr_item_heavy">Heavy exercise. 6 to 7 days a week</string>
+    <string name="bmr_item_heavy_daily">Heavy exercise daily and up to 2 times a day</string>
 </resources>
