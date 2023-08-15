@@ -41,4 +41,6 @@
     <string name="delete_success">Registro deletado com sucesso</string>
     <string name="delete_error">Erro ao deletar registro</string>
     <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="want_delete">Deseja apagar esse regitro?</string>
 </resources>

@@ -2,6 +2,7 @@ package br.com.raulreis.fitnesstracker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -27,7 +28,7 @@ class ListCalcActivity : AppCompatActivity() {
 
 
         val result = mutableListOf<Calc>()
-        adapter = ListCalcAdapter(result) { item, position ->
+        adapter = ListCalcAdapter(result, { item, position ->
             val description = if (item.type == "bmi") {getString(bmiResponse(item.res)) +
                     "\n\n${getString(R.string.registred_on)} " +
                     SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(item.createdDate)
@@ -78,7 +79,43 @@ class ListCalcActivity : AppCompatActivity() {
                 }
                 .create()
                 .show()
-        }
+        },
+        { item, position ->
+            AlertDialog.Builder(this@ListCalcActivity)
+                .setMessage(R.string.want_delete)
+                .setNegativeButton(R.string.no) { _, _ ->
+                    // Do nothing
+                }
+                .setPositiveButton(R.string.yes) {_, _ ->
+                    AlertDialog.Builder(this@ListCalcActivity)
+                        .setMessage(R.string.delete_question)
+                        .setNegativeButton(android.R.string.cancel) {_, _ ->
+
+                        }
+                        .setPositiveButton(R.string.yes) {_,_ ->
+
+                            Thread {
+                                val app = application as App
+                                val dao = app.db.calcDao()
+                                val response = dao.delete(item)
+
+                                runOnUiThread {
+                                    if (response > 0) {
+                                        result.removeAt(position)
+                                        adapter.notifyItemRemoved(position)
+                                        Toast.makeText(this@ListCalcActivity, R.string.delete_success, Toast.LENGTH_SHORT).show()
+                                    }
+                                    else
+                                        Toast.makeText(this@ListCalcActivity, R.string.delete_error, Toast.LENGTH_SHORT).show()
+                                }
+                            }.start()
+                        }
+                        .create()
+                        .show()
+                }
+                .create()
+                .show()
+        })
         rvListCalc = findViewById(R.id.rvListCalc)
         rvListCalc.layoutManager = LinearLayoutManager(this@ListCalcActivity)
         rvListCalc.adapter = adapter
@@ -114,7 +151,8 @@ class ListCalcActivity : AppCompatActivity() {
 
     private inner class ListCalcAdapter(
         private val listCalcItems : List<Calc>,
-        private val onItemClickListner: (Calc, Int) -> Unit
+        private val onItemClickListener: (Calc, Int) -> Unit,
+        private val onItemLongClickListener: (Calc, Int) -> Unit
     ) : RecyclerView.Adapter<ListCalcAdapter.ListCalcViewHolder>() {
         private inner class ListCalcViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun bind(item: Calc) {
@@ -143,7 +181,12 @@ class ListCalcActivity : AppCompatActivity() {
                 date.text = SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(item.createdDate)
 
                 container.setOnClickListener {
-                    onItemClickListner.invoke(item, adapterPosition)
+                    onItemClickListener.invoke(item, adapterPosition)
+                }
+
+                container.setOnLongClickListener {
+                    onItemLongClickListener.invoke(item, adapterPosition)
+                    true
                 }
             }
         }
