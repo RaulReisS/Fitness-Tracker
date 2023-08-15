@@ -26,24 +26,21 @@ class MainActivity : AppCompatActivity() {
             MainItem(
                 id = 1,
                 drawableID = R.drawable.baseline_balance_24,
-                textStringId = R.string.label_bmi,
-                color = Color.GREEN
+                textStringId = R.string.label_bmi
             )
         )
         mainItems.add(
             MainItem(
                 id = 2,
                 drawableID = R.drawable.baseline_monitor_heart_24,
-                textStringId = R.string.label_bmr,
-                color = Color.YELLOW
+                textStringId = R.string.label_bmr
             )
         )
         mainItems.add(
             MainItem(
                 id = 3,
                 drawableID = R.drawable.baseline_app_registration_24,
-                textStringId = R.string.records,
-                color = Color.CYAN
+                textStringId = R.string.records
             )
         )
 
@@ -108,7 +105,6 @@ class MainActivity : AppCompatActivity() {
 
                 img.setImageResource(item.drawableID)
                 name.setText(item.textStringId)
-                container.setBackgroundColor(item.color)
 
                 container.setOnClickListener {
                     onItemClickListener.invoke(item.id)
