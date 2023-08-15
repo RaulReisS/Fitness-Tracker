@@ -38,6 +38,15 @@ class MainActivity : AppCompatActivity() {
                 color = Color.YELLOW
             )
         )
+        mainItems.add(
+            MainItem(
+                id = 3,
+                drawableID = R.drawable.baseline_app_registration_24,
+                textStringId = R.string.records,
+                color = Color.CYAN
+            )
+        )
+
 
         val adapter = MainAdapter(mainItems) { id ->
             when (id) {
@@ -48,6 +57,12 @@ class MainActivity : AppCompatActivity() {
 
                 2 -> {
                     val intent = Intent(this@MainActivity, BmrActivity::class.java)
+                    startActivity(intent)
+                }
+
+                3-> {
+                    val intent = Intent(this@MainActivity, ListCalcActivity::class.java)
+                    intent.putExtra("type", "*")
                     startActivity(intent)
                 }
             }

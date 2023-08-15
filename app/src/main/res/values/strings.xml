@@ -34,4 +34,10 @@ indicate if they have the ideal weight, or if it is above or below that value.\n
     <string name="bmr_item_moderate">Moderate exercise. 3 to 5 days a week</string>
     <string name="bmr_item_heavy">Heavy exercise. 6 to 7 days a week</string>
     <string name="bmr_item_heavy_daily">Heavy exercise daily and up to 2 times a day</string>
+    <string name="records">Records</string>
+    <string name="delete">Delete</string>
+    <string name="delete_question">Are you sure you want to delete this record?</string>
+    <string name="delete_success">Record deleted successfully</string>
+    <string name="delete_error">Error deleting record</string>
+    <string name="yes">Yes</string>
 </resources>

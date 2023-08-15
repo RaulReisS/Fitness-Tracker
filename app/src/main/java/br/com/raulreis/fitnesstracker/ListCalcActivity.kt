@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import java.text.SimpleDateFormat
 class ListCalcActivity : AppCompatActivity() {
 
     private lateinit var rvListCalc : RecyclerView
+    private lateinit var adapter: ListCalcAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_calc)
@@ -25,10 +27,15 @@ class ListCalcActivity : AppCompatActivity() {
 
 
         val result = mutableListOf<Calc>()
-        val adapter = ListCalcAdapter(result) { item ->
-            val description = getString(bmiResponse(item.res)) +
+        adapter = ListCalcAdapter(result) { item, position ->
+            val description = if (item.type == "bmi") {getString(bmiResponse(item.res)) +
                     "\n\n${getString(R.string.registred_on)} " +
                     SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(item.createdDate)
+                                }
+                                else {
+                "${getString(R.string.registred_on)} " +
+                        SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(item.createdDate)
+            }
             val title = when(item.type) {
                 "bmi" -> getString(R.string.bmi_response, item.res)
                 "bmr" -> getString(R.string.bmr_response, item.res)
@@ -39,6 +46,35 @@ class ListCalcActivity : AppCompatActivity() {
                 .setMessage(description)
                 .setPositiveButton(android.R.string.ok) {_, _ ->
                     // Fazer nada, apensar fechar
+                }
+                .setNegativeButton(R.string.delete) {_, _ ->
+
+                    AlertDialog.Builder(this@ListCalcActivity)
+                        .setMessage(R.string.delete_question)
+                        .setNegativeButton(android.R.string.cancel) {_, _ ->
+                            
+                        }
+                        .setPositiveButton(R.string.yes) {_,_ ->
+
+                            Thread {
+                                val app = application as App
+                                val dao = app.db.calcDao()
+                                val response = dao.delete(item)
+                                
+                                runOnUiThread { 
+                                    if (response > 0) {
+                                        result.removeAt(position)
+                                        adapter.notifyItemRemoved(position)
+                                        Toast.makeText(this@ListCalcActivity, R.string.delete_success, Toast.LENGTH_SHORT).show()
+                                    }
+                                    else
+                                        Toast.makeText(this@ListCalcActivity, R.string.delete_error, Toast.LENGTH_SHORT).show()
+                                }
+                            }.start()
+                        }
+                        .create()
+                        .show()
+
                 }
                 .create()
                 .show()
@@ -51,7 +87,8 @@ class ListCalcActivity : AppCompatActivity() {
         Thread {
             val app = application as App
             val dao = app.db.calcDao()
-            val response = dao.getRegisterByType(type)
+            val response =  if (type == "*") dao.getRegisterAll()
+                            else dao.getRegisterByType(type)
 
             runOnUiThread {
                 result.addAll(response)
@@ -77,7 +114,7 @@ class ListCalcActivity : AppCompatActivity() {
 
     private inner class ListCalcAdapter(
         private val listCalcItems : List<Calc>,
-        private val onItemClickListner: (Calc) -> Unit
+        private val onItemClickListner: (Calc, Int) -> Unit
     ) : RecyclerView.Adapter<ListCalcAdapter.ListCalcViewHolder>() {
         private inner class ListCalcViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun bind(item: Calc) {
@@ -106,7 +143,7 @@ class ListCalcActivity : AppCompatActivity() {
                 date.text = SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(item.createdDate)
 
                 container.setOnClickListener {
-                    onItemClickListner.invoke(item)
+                    onItemClickListner.invoke(item, adapterPosition)
                 }
             }
         }
